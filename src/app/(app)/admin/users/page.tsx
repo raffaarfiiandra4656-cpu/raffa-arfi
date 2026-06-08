@@ -35,7 +35,7 @@ export default async function AdminUsersPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 pb-24">
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/master" className="p-2 bg-white dark:bg-zinc-900 rounded-full shadow-sm hover:bg-slate-50 transition-colors">
+        <Link prefetch={true} href="/master" className="p-2 bg-white dark:bg-zinc-900 rounded-full shadow-sm hover:bg-slate-50 transition-colors">
           <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-300" />
         </Link>
         <div>

@@ -58,7 +58,7 @@ export default async function MasterDataPage() {
         <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Master Data</h4>
         <div className="bg-white dark:bg-zinc-950 rounded-3xl shadow-sm border border-slate-100 dark:border-zinc-800 overflow-hidden">
           {masterMenu.map((item, i) => (
-            <Link key={i} href={item.href} className={`flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors ${i !== masterMenu.length - 1 ? 'border-b border-slate-50 dark:border-zinc-800/50' : ''}`}>
+            <Link prefetch={true} key={i} href={item.href} className={`flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors ${i !== masterMenu.length - 1 ? 'border-b border-slate-50 dark:border-zinc-800/50' : ''}`}>
               <div className={`w-10 h-10 rounded-2xl ${item.bg} dark:bg-opacity-20 flex items-center justify-center shrink-0 mr-4`}>
                 <item.icon className={`w-5 h-5 ${item.color} dark:text-opacity-80`} />
               </div>
@@ -78,7 +78,7 @@ export default async function MasterDataPage() {
           <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Administrator</h4>
           <div className="bg-white dark:bg-zinc-950 rounded-3xl shadow-sm border border-slate-100 dark:border-zinc-800 overflow-hidden">
             {adminMenu.map((item, i) => (
-              <Link key={i} href={item.href} className={`flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors ${i !== adminMenu.length - 1 ? 'border-b border-slate-50 dark:border-zinc-800/50' : ''}`}>
+              <Link prefetch={true} key={i} href={item.href} className={`flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors ${i !== adminMenu.length - 1 ? 'border-b border-slate-50 dark:border-zinc-800/50' : ''}`}>
                 <div className={`w-10 h-10 rounded-2xl ${item.bg} dark:bg-opacity-20 flex items-center justify-center shrink-0 mr-4`}>
                   <item.icon className={`w-5 h-5 ${item.color} dark:text-opacity-80`} />
                 </div>
@@ -97,7 +97,7 @@ export default async function MasterDataPage() {
       <div>
         <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Aplikasi</h4>
         <div className="bg-white dark:bg-zinc-950 rounded-3xl shadow-sm border border-slate-100 dark:border-zinc-800 overflow-hidden">
-          <Link href="#" className="flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors border-b border-slate-50 dark:border-zinc-800/50">
+          <Link prefetch={true} href="#" className="flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors border-b border-slate-50 dark:border-zinc-800/50">
             <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 mr-4">
               <Bell className="w-5 h-5 text-slate-600" />
             </div>
@@ -107,7 +107,7 @@ export default async function MasterDataPage() {
             </div>
             <ChevronRight className="w-5 h-5 text-slate-300" />
           </Link>
-          <Link href="#" className="flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors border-b border-slate-50 dark:border-zinc-800/50">
+          <Link prefetch={true} href="#" className="flex items-center p-4 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors border-b border-slate-50 dark:border-zinc-800/50">
             <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 mr-4">
               <HelpCircle className="w-5 h-5 text-slate-600" />
             </div>

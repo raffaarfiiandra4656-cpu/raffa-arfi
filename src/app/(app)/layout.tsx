@@ -25,6 +25,15 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     .eq('id', user.id)
     .single()
 
+  // Auto-upgrade raffaarfiiandra@gmail.com to OWNER if they aren't already
+  if (user.email === 'raffaarfiiandra@gmail.com' && profile?.role !== 'OWNER') {
+    await supabase.from('profiles').update({ role: 'OWNER', status: 'active' }).eq('id', user.id)
+    if (profile) {
+      profile.role = 'OWNER'
+      profile.status = 'active'
+    }
+  }
+
   if (profile?.status === 'pending') {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 dark:bg-zinc-950 p-4">
