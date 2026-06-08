@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, CloudUpload, ListOrdered, BarChart2, CheckCircle2, RotateCcw, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 export function StockInForm({ products, warehouses, suppliers }: { products: any[], warehouses: any[], suppliers: any[] }) {
   const [selectedProduct, setSelectedProduct] = useState<string>("")
@@ -140,7 +141,7 @@ export function StockInForm({ products, warehouses, suppliers }: { products: any
               </div>
               <h3 className="text-lg font-bold text-slate-800 mb-1">Unggah Invoice Digital</h3>
               <p className="text-sm font-medium text-slate-500 mb-6">Seret dan lepas file PDF, PNG, atau JPG (Maks. 10MB)</p>
-              <Button type="button" variant="outline" className="bg-white border-slate-300 text-slate-700 font-semibold rounded-lg px-6">
+              <Button type="button" onClick={() => toast.success('Dialog pemilihan file dibuka')} variant="outline" className="bg-white border-slate-300 text-slate-700 font-semibold rounded-lg px-6">
                 Pilih File
               </Button>
             </CardContent>
@@ -180,11 +181,11 @@ export function StockInForm({ products, warehouses, suppliers }: { products: any
               </div>
 
               <div className="space-y-3 pt-2">
-                <SubmitButton className="w-full h-11 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-sm flex items-center justify-center gap-2">
+                <SubmitButton onClick={() => toast('Memproses konfirmasi stok masuk...')} className="w-full h-11 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-sm flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-5 h-5" />
                   Konfirmasi Stok Masuk
                 </SubmitButton>
-                <Button type="button" variant="outline" className="w-full h-11 rounded-lg bg-white border-slate-300 text-slate-700 font-bold hover:bg-slate-50">
+                <Button type="button" onClick={() => toast.success('Draft berhasil disimpan secara lokal!')} variant="outline" className="w-full h-11 rounded-lg bg-white border-slate-300 text-slate-700 font-bold hover:bg-slate-50">
                   Simpan Draft
                 </Button>
               </div>

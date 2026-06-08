@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Package, LayoutDashboard, ArchiveRestore, Settings, Users, LogOut, FileText, Bell, MoreHorizontal, ArrowDownRight, ArrowUpRight, Truck, Building2, BarChart3 } from 'lucide-react'
 import { logout } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
+import { HeaderActions } from '@/components/header-actions'
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient()
@@ -143,21 +144,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
         {/* Desktop Header (Hidden on Mobile) */}
         <header className="hidden md:flex h-20 items-center justify-end px-10 bg-transparent">
-           <div className="flex items-center space-x-6">
-              <button className="p-2.5 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow relative">
-                <Bell className="h-5 w-5 text-slate-500" />
-                <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-white"></span>
-              </button>
-              <div className="flex items-center bg-white pl-2 pr-4 py-1.5 rounded-full shadow-sm border border-slate-100 cursor-pointer">
-                <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
-                  <span className="text-sm font-bold text-indigo-700">{profile?.full_name?.charAt(0).toUpperCase() || 'U'}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-slate-700">{profile?.full_name || 'User'}</span>
-                  <span className="text-xs font-semibold text-indigo-600">{profile?.role}</span>
-                </div>
-              </div>
-           </div>
+           <HeaderActions 
+             initials={profile?.full_name?.charAt(0).toUpperCase() || 'U'}
+             fullName={profile?.full_name || 'User'}
+             role={profile?.role || 'VIEWER'}
+           />
         </header>
 
         {/* Page Content */}
