@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Package, LayoutDashboard, ShoppingCart, ArchiveRestore, Settings, Users, LogOut, FileText } from 'lucide-react'
+import { Package, LayoutDashboard, ArchiveRestore, Settings, Users, LogOut, FileText, Bell, MoreHorizontal } from 'lucide-react'
 import { logout } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 
@@ -20,18 +20,18 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   // Fetch profile to get role and status
   const { data: profile } = await supabase
     .from('profiles')
-    .select('role, status, company_id')
+    .select('role, status, company_id, full_name')
     .eq('id', user.id)
     .single()
 
   if (profile?.status === 'pending') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-zinc-950 p-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-2">Menunggu Persetujuan</h1>
-          <p className="text-gray-500 mb-6">Akun Anda sedang menunggu persetujuan dari Owner.</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 dark:bg-zinc-950 p-4">
+        <div className="text-center bg-white p-8 rounded-3xl shadow-xl">
+          <h1 className="text-2xl font-bold mb-2 text-indigo-900">Menunggu Persetujuan</h1>
+          <p className="text-slate-500 mb-6">Akun Anda sedang menunggu persetujuan dari Owner.</p>
           <form action={logout as any}>
-            <Button variant="outline">Keluar</Button>
+            <Button variant="outline" className="rounded-full w-full">Keluar</Button>
           </form>
         </div>
       </div>
@@ -40,101 +40,141 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   if (profile?.status === 'suspended') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-zinc-950 p-4">
-        <div className="text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 dark:bg-zinc-950 p-4">
+        <div className="text-center bg-white p-8 rounded-3xl shadow-xl border border-red-100">
           <h1 className="text-2xl font-bold mb-2 text-red-600">Akun Ditangguhkan</h1>
-          <p className="text-gray-500 mb-6">Hubungi Administrator Anda.</p>
+          <p className="text-slate-500 mb-6">Hubungi Administrator Anda.</p>
           <form action={logout as any}>
-            <Button variant="outline">Keluar</Button>
+            <Button variant="outline" className="rounded-full w-full">Keluar</Button>
           </form>
         </div>
       </div>
     )
   }
 
+  const navItems = [
+    { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Products', href: '/products', icon: Package },
+    { name: 'Inventory', href: '/inventory', icon: ArchiveRestore },
+    { name: 'Reports', href: '/reports', icon: FileText },
+  ]
+
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-zinc-900">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-zinc-950 border-r dark:border-zinc-800 hidden md:flex flex-col">
-        <div className="h-16 flex items-center px-6 border-b dark:border-zinc-800">
-          <Package className="h-6 w-6 text-blue-600 mr-2" />
-          <span className="text-xl font-bold text-gray-900 dark:text-white">StockFlow</span>
-        </div>
-        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-          <Link href="/dashboard" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-zinc-800">
-            <LayoutDashboard className="h-5 w-5 mr-3 text-gray-500" />
-            Dashboard
-          </Link>
-          <Link href="/products" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-            <Package className="h-5 w-5 mr-3 text-gray-400" />
-            Produk
-          </Link>
-          <Link href="/inventory" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-            <ArchiveRestore className="h-5 w-5 mr-3 text-gray-400" />
-            Inventaris
-          </Link>
-          <Link href="/master" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-            <Settings className="h-5 w-5 mr-3 text-gray-400" />
-            Master Data
-          </Link>
-          <Link href="/reports" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-            <FileText className="h-5 w-5 mr-3 text-gray-400" />
-            Laporan
-          </Link>
-          {profile?.role === 'OWNER' && (
-            <div className="pt-4 mt-4 border-t dark:border-zinc-800">
-              <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Admin Panel</p>
-              <Link href="/admin/users" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-                <Users className="h-5 w-5 mr-3 text-gray-400" />
-                Pengguna & Peran
-              </Link>
-              <Link href="/admin/invitations" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-                <Users className="h-5 w-5 mr-3 text-gray-400" />
-                Undangan Tim
-              </Link>
-              <Link href="/admin/activity-logs" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-                <FileText className="h-5 w-5 mr-3 text-gray-400" />
-                Log Aktivitas
-              </Link>
-              <Link href="/admin/company-settings" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-                <Settings className="h-5 w-5 mr-3 text-gray-400" />
-                Pengaturan Perusahaan
-              </Link>
+    <div className="flex min-h-screen bg-slate-50 dark:bg-zinc-900 font-sans">
+      
+      {/* Desktop Sidebar (Sleek & Floating) */}
+      <aside className="hidden md:flex flex-col w-72 bg-transparent p-4 h-screen fixed">
+        <div className="bg-white dark:bg-zinc-950 rounded-3xl shadow-xl border border-slate-100 dark:border-zinc-800 flex flex-col h-full overflow-hidden">
+          <div className="h-20 flex items-center px-8 border-b border-slate-50 dark:border-zinc-800/50">
+            <div className="bg-indigo-600 p-2 rounded-xl mr-3 shadow-lg shadow-indigo-200 dark:shadow-none">
+              <Package className="h-5 w-5 text-white" />
             </div>
-          )}
-        </nav>
-        <div className="p-4 border-t dark:border-zinc-800">
-          <form action={logout as any}>
-            <button type="submit" className="flex w-full items-center px-3 py-2 text-sm font-medium rounded-md text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10">
-              <LogOut className="h-5 w-5 mr-3" />
-              Keluar
-            </button>
-          </form>
+            <span className="text-xl font-bold text-slate-800 dark:text-white">StockFlow</span>
+          </div>
+          
+          <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+            {navItems.map((item) => (
+              <Link key={item.name} href={item.href} className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-zinc-800 transition-colors">
+                <item.icon className="h-5 w-5 mr-4" />
+                {item.name}
+              </Link>
+            ))}
+
+            <div className="pt-6 pb-2">
+              <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Master & Admin</p>
+            </div>
+            
+            <Link href="/master" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
+              <Settings className="h-5 w-5 mr-4" />
+              Master Data
+            </Link>
+
+            {profile?.role === 'OWNER' && (
+              <>
+                <Link href="/admin/users" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
+                  <Users className="h-5 w-5 mr-4" />
+                  Tim & Peran
+                </Link>
+                <Link href="/admin/company-settings" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
+                  <Settings className="h-5 w-5 mr-4" />
+                  Pengaturan
+                </Link>
+              </>
+            )}
+          </nav>
+
+          <div className="p-4">
+            <form action={logout as any}>
+              <button type="submit" className="flex w-full items-center px-4 py-3 text-sm font-semibold rounded-2xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                <LogOut className="h-5 w-5 mr-4" />
+                Keluar Akun
+              </button>
+            </form>
+          </div>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden">
-        {/* Header */}
-        <header className="h-16 bg-white dark:bg-zinc-950 border-b dark:border-zinc-800 flex items-center justify-between px-6">
-           <div className="flex items-center md:hidden">
-              <span className="text-xl font-bold text-gray-900 dark:text-white">StockFlow</span>
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col min-h-screen md:pl-72 pb-20 md:pb-0">
+        
+        {/* Mobile Header (Hidden on Desktop) */}
+        <header className="md:hidden flex items-center justify-between px-6 py-4 bg-slate-50 dark:bg-zinc-900 sticky top-0 z-10">
+           <div className="flex items-center">
+              <div className="bg-indigo-600 p-2 rounded-xl mr-3 shadow-md shadow-indigo-200">
+                <Package className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-slate-800 dark:text-white">StockFlow</span>
            </div>
-           <div className="ml-auto flex items-center space-x-4">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {user.email}
-              </span>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                {profile?.role}
-              </span>
+           <div className="flex items-center space-x-3">
+              <button className="p-2 bg-white rounded-full shadow-sm">
+                <Bell className="h-5 w-5 text-slate-400" />
+              </button>
+              <div className="h-10 w-10 rounded-full bg-indigo-100 border-2 border-white shadow-sm flex items-center justify-center overflow-hidden">
+                <span className="text-sm font-bold text-indigo-700">{profile?.full_name?.charAt(0).toUpperCase() || 'U'}</span>
+              </div>
+           </div>
+        </header>
+
+        {/* Desktop Header (Hidden on Mobile) */}
+        <header className="hidden md:flex h-20 items-center justify-end px-10 bg-transparent">
+           <div className="flex items-center space-x-6">
+              <button className="p-2.5 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow relative">
+                <Bell className="h-5 w-5 text-slate-500" />
+                <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-white"></span>
+              </button>
+              <div className="flex items-center bg-white pl-2 pr-4 py-1.5 rounded-full shadow-sm border border-slate-100 cursor-pointer">
+                <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                  <span className="text-sm font-bold text-indigo-700">{profile?.full_name?.charAt(0).toUpperCase() || 'U'}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-slate-700">{profile?.full_name || 'User'}</span>
+                  <span className="text-xs font-semibold text-indigo-600">{profile?.role}</span>
+                </div>
+              </div>
            </div>
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto px-4 md:px-10 pb-8 pt-2 md:pt-0 max-w-7xl mx-auto w-full">
           {children}
         </div>
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 pb-safe z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+        <div className="flex justify-around items-center h-16 px-2">
+          {navItems.map((item) => (
+            <Link key={item.name} href={item.href} className="flex flex-col items-center justify-center w-full h-full space-y-1">
+              <item.icon className="h-6 w-6 text-slate-400 hover:text-indigo-600" />
+              <span className="text-[10px] font-semibold text-slate-500">{item.name}</span>
+            </Link>
+          ))}
+          <Link href="/master" className="flex flex-col items-center justify-center w-full h-full space-y-1">
+            <MoreHorizontal className="h-6 w-6 text-slate-400 hover:text-indigo-600" />
+            <span className="text-[10px] font-semibold text-slate-500">More</span>
+          </Link>
+        </div>
+      </nav>
     </div>
   )
 }

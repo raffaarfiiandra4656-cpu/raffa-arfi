@@ -7,6 +7,7 @@ import { SubmitButton } from '@/components/ui/submit-button'
 import { addProduct } from '@/app/actions/products'
 import Link from 'next/link'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { ChevronLeft, PackagePlus } from 'lucide-react'
 
 export default async function NewProductPage() {
   const supabase = await createClient()
@@ -44,61 +45,65 @@ export default async function NewProductPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Tambah Produk Baru</h2>
-          <p className="text-muted-foreground">Masukkan informasi produk ke dalam inventaris.</p>
-        </div>
-        <Link href="/products">
-          <Button variant="outline">Batal</Button>
+    <div className="max-w-2xl mx-auto space-y-6 pb-24">
+      <div className="flex items-center gap-4 mb-6">
+        <Link href="/products" className="p-2 bg-white dark:bg-zinc-900 rounded-full shadow-sm hover:bg-slate-50 transition-colors">
+          <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-300" />
         </Link>
+        <div>
+          <h2 className="text-2xl font-extrabold text-slate-800 dark:text-white tracking-tight">Tambah Produk Baru</h2>
+          <p className="text-sm font-medium text-slate-500 mt-1">Masukkan informasi produk ke dalam inventaris.</p>
+        </div>
       </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Informasi Dasar</CardTitle>
-          <CardDescription>Detail utama dari produk Anda.</CardDescription>
+      <Card className="rounded-3xl border-0 shadow-lg shadow-slate-200/50 dark:shadow-none dark:bg-zinc-950 overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-indigo-50 dark:from-indigo-900/20 to-transparent"></div>
+        <CardHeader className="relative z-10 pb-2">
+          <div className="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/50 rounded-2xl flex items-center justify-center mb-4">
+             <PackagePlus className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
+          </div>
+          <CardTitle className="text-lg font-bold text-slate-800 dark:text-white">Informasi Dasar</CardTitle>
+          <CardDescription className="text-slate-500 font-medium">Detail utama dari produk Anda.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <form action={addProduct as any} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+        <CardContent className="relative z-10">
+          <form action={addProduct as any} className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <Label htmlFor="sku">SKU (Stock Keeping Unit)</Label>
-                <Input id="sku" name="sku" placeholder="Contoh: PRD-001" required />
+                <Label htmlFor="sku" className="text-slate-600 font-bold ml-1">SKU (Kode Barang)</Label>
+                <Input id="sku" name="sku" placeholder="Contoh: PRD-001" required className="rounded-2xl border-slate-200 bg-slate-50 py-6" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="name">Nama Produk</Label>
-                <Input id="name" name="name" placeholder="Contoh: Telur Organik" required />
+                <Label htmlFor="name" className="text-slate-600 font-bold ml-1">Nama Produk</Label>
+                <Input id="name" name="name" placeholder="Contoh: Telur Organik" required className="rounded-2xl border-slate-200 bg-slate-50 py-6" />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <Label htmlFor="category_id">Kategori</Label>
+                <Label htmlFor="category_id" className="text-slate-600 font-bold ml-1">Kategori</Label>
                 <Select name="category_id">
-                  <SelectTrigger>
+                  <SelectTrigger className="rounded-2xl border-slate-200 bg-slate-50 py-6">
                     <SelectValue placeholder="Pilih Kategori" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-2xl">
                     {categories.length > 0 ? categories.map(c => (
-                      <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                      <SelectItem key={c.id} value={c.id} className="rounded-xl">{c.name}</SelectItem>
                     )) : (
                       <SelectItem value="none" disabled>Tidak ada kategori</SelectItem>
                     )}
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">Tambahkan di menu Master Data jika kosong.</p>
+                <p className="text-xs text-slate-400 font-medium ml-1">Tambahkan di menu Master Data jika kosong.</p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="unit_id">Unit Pengukuran</Label>
+                <Label htmlFor="unit_id" className="text-slate-600 font-bold ml-1">Unit Pengukuran</Label>
                 <Select name="unit_id">
-                  <SelectTrigger>
+                  <SelectTrigger className="rounded-2xl border-slate-200 bg-slate-50 py-6">
                     <SelectValue placeholder="Pilih Unit" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-2xl">
                     {units.length > 0 ? units.map(u => (
-                      <SelectItem key={u.id} value={u.id}>{u.name}</SelectItem>
+                      <SelectItem key={u.id} value={u.id} className="rounded-xl">{u.name}</SelectItem>
                     )) : (
                       <SelectItem value="none" disabled>Tidak ada unit</SelectItem>
                     )}
@@ -107,16 +112,16 @@ export default async function NewProductPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                <div className="space-y-2">
-                <Label htmlFor="warehouse_id">Gudang Penyimpanan</Label>
+                <Label htmlFor="warehouse_id" className="text-slate-600 font-bold ml-1">Gudang Penyimpanan</Label>
                 <Select name="warehouse_id">
-                  <SelectTrigger>
+                  <SelectTrigger className="rounded-2xl border-slate-200 bg-slate-50 py-6">
                     <SelectValue placeholder="Pilih Gudang" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-2xl">
                     {warehouses.length > 0 ? warehouses.map(w => (
-                      <SelectItem key={w.id} value={w.id}>{w.name}</SelectItem>
+                      <SelectItem key={w.id} value={w.id} className="rounded-xl">{w.name}</SelectItem>
                     )) : (
                       <SelectItem value="none" disabled>Tidak ada gudang</SelectItem>
                     )}
@@ -125,19 +130,22 @@ export default async function NewProductPage() {
               </div>
             </div>
 
-            <div className="border-t pt-4 mt-4 grid grid-cols-2 gap-4">
+            <div className="border-t border-slate-100 dark:border-zinc-800 pt-5 mt-2 grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <Label htmlFor="current_stock">Stok Awal</Label>
-                <Input id="current_stock" name="current_stock" type="number" min="0" defaultValue="0" />
+                <Label htmlFor="current_stock" className="text-slate-600 font-bold ml-1">Stok Awal</Label>
+                <Input id="current_stock" name="current_stock" type="number" min="0" defaultValue="0" className="rounded-2xl border-slate-200 bg-slate-50 py-6" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="min_stock">Peringatan Stok Minimum</Label>
-                <Input id="min_stock" name="min_stock" type="number" min="0" defaultValue="10" />
+                <Label htmlFor="min_stock" className="text-slate-600 font-bold ml-1">Peringatan Stok Minimum</Label>
+                <Input id="min_stock" name="min_stock" type="number" min="0" defaultValue="10" className="rounded-2xl border-slate-200 bg-slate-50 py-6" />
               </div>
             </div>
 
-            <div className="pt-4 flex justify-end">
-              <SubmitButton>Simpan Produk</SubmitButton>
+            {/* Mobile Sticky Button */}
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-xl border-t border-slate-100 z-50 md:relative md:bg-transparent md:backdrop-blur-none md:border-0 md:p-0 md:mt-8 md:flex md:justify-end">
+              <SubmitButton className="w-full md:w-auto py-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base shadow-lg shadow-indigo-200 transition-all">
+                Simpan Produk Baru
+              </SubmitButton>
             </div>
           </form>
         </CardContent>
