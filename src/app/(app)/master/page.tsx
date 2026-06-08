@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { SubmitButton } from '@/components/ui/submit-button'
 import { addCategory, addUnit, addWarehouse } from '@/app/actions/master'
 
 export default async function MasterDataPage() {
@@ -63,7 +64,7 @@ export default async function MasterDataPage() {
                       <Label htmlFor="cat_desc">Deskripsi</Label>
                       <Input id="cat_desc" name="description" placeholder="Kategori untuk semua makanan" />
                     </div>
-                    <Button type="submit">Simpan</Button>
+                    <SubmitButton>Simpan</SubmitButton>
                   </form>
                 </CardContent>
               </Card>
@@ -106,7 +107,7 @@ export default async function MasterDataPage() {
                       <Label htmlFor="unit_abbr">Singkatan</Label>
                       <Input id="unit_abbr" name="abbreviation" placeholder="Contoh: kg" required />
                     </div>
-                    <Button type="submit">Simpan</Button>
+                    <SubmitButton>Simpan</SubmitButton>
                   </form>
                 </CardContent>
               </Card>
@@ -149,7 +150,7 @@ export default async function MasterDataPage() {
                       <Label htmlFor="wh_loc">Lokasi</Label>
                       <Input id="wh_loc" name="location" placeholder="Alamat lengkap" />
                     </div>
-                    <Button type="submit">Simpan</Button>
+                    <SubmitButton>Simpan</SubmitButton>
                   </form>
                 </CardContent>
               </Card>

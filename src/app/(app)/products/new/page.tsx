@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { SubmitButton } from '@/components/ui/submit-button'
 import { addProduct } from '@/app/actions/products'
 import Link from 'next/link'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -136,7 +137,7 @@ export default async function NewProductPage() {
             </div>
 
             <div className="pt-4 flex justify-end">
-              <Button type="submit">Simpan Produk</Button>
+              <SubmitButton>Simpan Produk</SubmitButton>
             </div>
           </form>
         </CardContent>

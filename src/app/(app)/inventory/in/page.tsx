@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { SubmitButton } from '@/components/ui/submit-button'
 import { processStockIn } from '@/app/actions/inventory'
 import Link from 'next/link'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -139,7 +140,7 @@ export default async function StockInPage() {
             </div>
 
             <div className="pt-4 flex justify-end">
-              <Button type="submit">Proses Stock In</Button>
+              <SubmitButton>Proses Stock In</SubmitButton>
             </div>
           </form>
         </CardContent>
