@@ -60,8 +60,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     { name: 'Inventory', href: '/inventory', icon: ArchiveRestore },
     { name: 'Suppliers', href: '/suppliers', icon: Truck },
     { name: 'Warehouses', href: '/master/warehouses', icon: Building2 },
-    { name: 'Analytics', href: '#', icon: BarChart3 },
+    { name: 'Analytics', href: '/analytics', icon: BarChart3 },
     { name: 'Reports', href: '/reports', icon: FileText },
+    { name: 'Settings', href: '/settings', icon: Settings },
   ]
 
   return (

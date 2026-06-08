@@ -46,30 +46,20 @@ export default async function StockInPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 pb-24">
-      <div className="flex items-center gap-4 mb-6">
-        <Link href="/inventory" className="p-2 bg-white dark:bg-zinc-900 rounded-full shadow-sm hover:bg-slate-50 transition-colors">
-          <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-300" />
-        </Link>
+    <div className="space-y-6 pb-24 font-sans">
+      <div className="flex flex-col md:flex-row md:items-end gap-2 mb-2">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-800 dark:text-white tracking-tight">Stok Masuk</h2>
-          <p className="text-sm font-medium text-slate-500 mt-1">Catat penambahan stok ke dalam inventaris.</p>
+          <div className="flex items-center text-sm font-semibold text-slate-500 mb-2">
+            <Link href="/inventory" className="hover:text-indigo-600 transition-colors">Inventaris</Link>
+            <span className="mx-2">›</span>
+            <span className="text-indigo-600 font-bold">Input Stok Masuk</span>
+          </div>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">Penerimaan Stok Barang</h2>
+          <p className="text-sm font-medium text-slate-500 mt-1">Catat barang masuk secara presisi untuk menjaga akurasi inventaris Anda.</p>
         </div>
       </div>
       
-      <Card className="rounded-3xl border-0 shadow-lg shadow-emerald-200/50 dark:shadow-none dark:bg-zinc-950 overflow-hidden relative">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-emerald-50 dark:from-emerald-900/20 to-transparent"></div>
-        <CardHeader className="relative z-10 pb-2">
-          <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/50 rounded-2xl flex items-center justify-center mb-4">
-             <ArrowDownRight className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
-          </div>
-          <CardTitle className="text-lg font-bold text-slate-800 dark:text-white">Detail Barang Masuk</CardTitle>
-          <CardDescription className="text-slate-500 font-medium">Masukkan rincian stok yang diterima.</CardDescription>
-        </CardHeader>
-        <CardContent className="relative z-10">
-          <StockInForm products={products} warehouses={warehouses} suppliers={suppliers} />
-        </CardContent>
-      </Card>
+      <StockInForm products={products} warehouses={warehouses} suppliers={suppliers} />
     </div>
   )
 }
