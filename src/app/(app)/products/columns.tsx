@@ -74,6 +74,7 @@ export const columns: ColumnDef<Product>[] = [
 
       return (
         <DropdownMenu>
+          {/* @ts-ignore */}
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Buka menu</span>

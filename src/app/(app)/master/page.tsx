@@ -52,7 +52,7 @@ export default async function MasterDataPage() {
                 <CardDescription>Buat kategori produk baru.</CardDescription>
               </CardHeader>
               <CardContent>
-                <form action={addCategory} className="space-y-4">
+                <form action={addCategory as any} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="cat_name">Nama Kategori</Label>
                     <Input id="cat_name" name="name" placeholder="Contoh: Makanan" required />
@@ -93,7 +93,7 @@ export default async function MasterDataPage() {
                 <CardDescription>Buat satuan pengukuran baru.</CardDescription>
               </CardHeader>
               <CardContent>
-                <form action={addUnit} className="space-y-4">
+                <form action={addUnit as any} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="unit_name">Nama Unit</Label>
                     <Input id="unit_name" name="name" placeholder="Contoh: Kilogram" required />
@@ -134,7 +134,7 @@ export default async function MasterDataPage() {
                 <CardDescription>Daftarkan lokasi penyimpanan Anda.</CardDescription>
               </CardHeader>
               <CardContent>
-                <form action={addWarehouse} className="space-y-4">
+                <form action={addWarehouse as any} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="wh_name">Nama Gudang</Label>
                     <Input id="wh_name" name="name" placeholder="Contoh: Gudang Utama" required />

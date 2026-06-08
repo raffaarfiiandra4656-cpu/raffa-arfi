@@ -91,8 +91,8 @@ export default async function InventoryPage() {
                       {format(new Date(t.date), 'dd MMM yyyy, HH:mm', { locale: id })}
                     </TableCell>
                     <TableCell>
-                      <div className="font-medium">{t.products?.name}</div>
-                      <div className="text-xs text-muted-foreground">{t.products?.sku}</div>
+                      <div className="font-medium">{(t.products as any)?.name}</div>
+                      <div className="text-xs text-muted-foreground">{(t.products as any)?.sku}</div>
                     </TableCell>
                     <TableCell>
                       <Badge variant={t.type === 'IN' ? 'default' : 'destructive'} className={t.type === 'IN' ? 'bg-green-100 text-green-800 hover:bg-green-100' : ''}>
@@ -104,7 +104,7 @@ export default async function InventoryPage() {
                     </TableCell>
                     <TableCell className="text-right text-muted-foreground">{t.before_stock}</TableCell>
                     <TableCell className="text-right font-bold">{t.after_stock}</TableCell>
-                    <TableCell>{t.profiles?.full_name || 'Sistem'}</TableCell>
+                    <TableCell>{(t.profiles as any)?.full_name || 'Sistem'}</TableCell>
                   </TableRow>
                 )) : (
                   <TableRow>

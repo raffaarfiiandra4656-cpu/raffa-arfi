@@ -50,7 +50,7 @@ export default async function StockInPage() {
           <CardDescription>Masukkan rincian stok yang diterima.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={processStockIn} className="space-y-4">
+          <form action={processStockIn as any} className="space-y-4">
             
             <div className="space-y-2">
               <Label htmlFor="product_id">Pilih Produk</Label>

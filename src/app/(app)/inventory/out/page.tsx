@@ -47,7 +47,7 @@ export default async function StockOutPage() {
           <CardDescription>Masukkan rincian stok yang dikeluarkan.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={processStockOut} className="space-y-4">
+          <form action={processStockOut as any} className="space-y-4">
             
             <div className="space-y-2">
               <Label htmlFor="product_id">Pilih Produk</Label>

@@ -42,8 +42,8 @@ export default async function ReportsPage() {
       exportData = data.map(p => ({
         SKU: p.sku,
         'Nama Produk': p.name,
-        Kategori: p.categories?.name || '-',
-        Unit: p.units?.name || '-',
+        Kategori: (p.categories as any)?.name || '-',
+        Unit: (p.units as any)?.name || '-',
         Stok: p.current_stock,
         Status: p.status
       }))
@@ -82,8 +82,8 @@ export default async function ReportsPage() {
                   <TableRow key={i}>
                     <TableCell className="font-medium text-xs text-muted-foreground">{p.sku}</TableCell>
                     <TableCell className="font-bold">{p.name}</TableCell>
-                    <TableCell>{p.categories?.name}</TableCell>
-                    <TableCell className="text-right font-bold">{p.current_stock} {p.units?.name}</TableCell>
+                    <TableCell>{(p.categories as any)?.name}</TableCell>
+                    <TableCell className="text-right font-bold">{p.current_stock} {(p.units as any)?.name}</TableCell>
                     <TableCell>{p.status}</TableCell>
                   </TableRow>
                 )) : (

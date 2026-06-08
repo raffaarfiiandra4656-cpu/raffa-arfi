@@ -50,7 +50,7 @@ export default async function NewProductPage() {
           <CardDescription>Detail utama dari produk Anda.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={addProduct} className="space-y-4">
+          <form action={addProduct as any} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="sku">SKU (Stock Keeping Unit)</Label>

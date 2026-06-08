@@ -62,7 +62,8 @@ export default async function DashboardPage() {
       
     if (expiring && expiring.length > 0) {
        expiring.forEach(e => {
-         aiInsights.push(`⚠️ Perhatian: ${e.quantity} unit ${e.products?.name} akan kedaluwarsa pada ${new Date(e.expiration_date).toLocaleDateString('id-ID')}.`)
+         const productName = (e.products as any)?.name || 'Produk'
+         aiInsights.push(`⚠️ Perhatian: ${e.quantity} unit ${productName} akan kedaluwarsa pada ${new Date(e.expiration_date).toLocaleDateString('id-ID')}.`)
        })
     }
 
@@ -138,7 +139,7 @@ export default async function DashboardPage() {
                   <div className={`mr-4 h-2 w-2 rounded-full ${act.type === 'IN' ? 'bg-green-500' : 'bg-red-500'}`} />
                   <div className="flex-1 space-y-1">
                     <p className="text-sm font-medium leading-none">
-                      {act.type === 'IN' ? 'Barang Masuk' : 'Barang Keluar'} - {act.products?.name}
+                      {act.type === 'IN' ? 'Barang Masuk' : 'Barang Keluar'} - {(act.products as any)?.name || 'Produk'}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {act.type === 'IN' ? '+' : '-'}{act.quantity} unit pada {new Date(act.date).toLocaleDateString('id-ID')}
