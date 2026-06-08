@@ -11,8 +11,9 @@ export default async function MasterDataPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   const companyId = profile?.company_id
+  const isViewer = profile?.role === 'VIEWER'
 
   let categories: any[] = []
   let units: any[] = []
@@ -45,26 +46,28 @@ export default async function MasterDataPage() {
         
         {/* Categories Tab */}
         <TabsContent value="categories" className="space-y-4 mt-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Tambah Kategori</CardTitle>
-                <CardDescription>Buat kategori produk baru.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form action={addCategory as any} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="cat_name">Nama Kategori</Label>
-                    <Input id="cat_name" name="name" placeholder="Contoh: Makanan" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="cat_desc">Deskripsi</Label>
-                    <Input id="cat_desc" name="description" placeholder="Kategori untuk semua makanan" />
-                  </div>
-                  <Button type="submit">Simpan</Button>
-                </form>
-              </CardContent>
-            </Card>
+          <div className={`grid gap-4 ${!isViewer ? 'md:grid-cols-2' : ''}`}>
+            {!isViewer && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tambah Kategori</CardTitle>
+                  <CardDescription>Buat kategori produk baru.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form action={addCategory as any} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="cat_name">Nama Kategori</Label>
+                      <Input id="cat_name" name="name" placeholder="Contoh: Makanan" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="cat_desc">Deskripsi</Label>
+                      <Input id="cat_desc" name="description" placeholder="Kategori untuk semua makanan" />
+                    </div>
+                    <Button type="submit">Simpan</Button>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
             <Card>
               <CardHeader>
                 <CardTitle>Daftar Kategori</CardTitle>
@@ -86,26 +89,28 @@ export default async function MasterDataPage() {
 
         {/* Units Tab */}
         <TabsContent value="units" className="space-y-4 mt-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Tambah Unit</CardTitle>
-                <CardDescription>Buat satuan pengukuran baru.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form action={addUnit as any} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="unit_name">Nama Unit</Label>
-                    <Input id="unit_name" name="name" placeholder="Contoh: Kilogram" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="unit_abbr">Singkatan</Label>
-                    <Input id="unit_abbr" name="abbreviation" placeholder="Contoh: kg" required />
-                  </div>
-                  <Button type="submit">Simpan</Button>
-                </form>
-              </CardContent>
-            </Card>
+          <div className={`grid gap-4 ${!isViewer ? 'md:grid-cols-2' : ''}`}>
+            {!isViewer && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tambah Unit</CardTitle>
+                  <CardDescription>Buat satuan pengukuran baru.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form action={addUnit as any} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="unit_name">Nama Unit</Label>
+                      <Input id="unit_name" name="name" placeholder="Contoh: Kilogram" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="unit_abbr">Singkatan</Label>
+                      <Input id="unit_abbr" name="abbreviation" placeholder="Contoh: kg" required />
+                    </div>
+                    <Button type="submit">Simpan</Button>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
             <Card>
               <CardHeader>
                 <CardTitle>Daftar Unit</CardTitle>
@@ -127,26 +132,28 @@ export default async function MasterDataPage() {
 
         {/* Warehouses Tab */}
         <TabsContent value="warehouses" className="space-y-4 mt-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Tambah Gudang</CardTitle>
-                <CardDescription>Daftarkan lokasi penyimpanan Anda.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form action={addWarehouse as any} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wh_name">Nama Gudang</Label>
-                    <Input id="wh_name" name="name" placeholder="Contoh: Gudang Utama" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wh_loc">Lokasi</Label>
-                    <Input id="wh_loc" name="location" placeholder="Alamat lengkap" />
-                  </div>
-                  <Button type="submit">Simpan</Button>
-                </form>
-              </CardContent>
-            </Card>
+          <div className={`grid gap-4 ${!isViewer ? 'md:grid-cols-2' : ''}`}>
+            {!isViewer && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tambah Gudang</CardTitle>
+                  <CardDescription>Daftarkan lokasi penyimpanan Anda.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form action={addWarehouse as any} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="wh_name">Nama Gudang</Label>
+                      <Input id="wh_name" name="name" placeholder="Contoh: Gudang Utama" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="wh_loc">Lokasi</Label>
+                      <Input id="wh_loc" name="location" placeholder="Alamat lengkap" />
+                    </div>
+                    <Button type="submit">Simpan</Button>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
             <Card>
               <CardHeader>
                 <CardTitle>Daftar Gudang</CardTitle>

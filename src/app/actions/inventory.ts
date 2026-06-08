@@ -4,19 +4,28 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
+import { logActivity } from './logs'
+
 async function getCompanyId() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   if (!profile?.company_id) throw new Error('No company found')
+  if (profile.role === 'VIEWER') throw new Error('Unauthorized: Viewers cannot process stock')
   
   return { supabase, companyId: profile.company_id, userId: user.id }
 }
 
 export async function processStockIn(formData: FormData) {
-  const { supabase, companyId, userId } = await getCompanyId()
+  let ctx;
+  try {
+    ctx = await getCompanyId()
+  } catch (err: any) {
+    return { error: err.message }
+  }
+  const { supabase, companyId, userId } = ctx
   
   const productId = formData.get('product_id') as string
   const quantity = parseInt(formData.get('quantity') as string)
@@ -31,8 +40,7 @@ export async function processStockIn(formData: FormData) {
     return { error: 'Data tidak valid' }
   }
 
-  // The database trigger will automatically update the product's current_stock
-  const { error } = await supabase.from('stock_transactions').insert([{
+  const { data: tx, error } = await supabase.from('stock_transactions').insert([{
     company_id: companyId,
     product_id: productId,
     warehouse_id: warehouseId,
@@ -44,13 +52,14 @@ export async function processStockIn(formData: FormData) {
     production_date: productionDate,
     expiration_date: expirationDate,
     notes: notes,
-    // before_stock and after_stock are populated by DB trigger
-  }])
+  }]).select().single()
 
   if (error) {
     console.error('Stock In Error:', error)
     return { error: error.message }
   }
+
+  await logActivity('Stock Added', 'stock_transaction', tx.id, { product_id: productId, quantity })
 
   revalidatePath('/inventory')
   revalidatePath('/products')
@@ -58,7 +67,13 @@ export async function processStockIn(formData: FormData) {
 }
 
 export async function processStockOut(formData: FormData) {
-  const { supabase, companyId, userId } = await getCompanyId()
+  let ctx;
+  try {
+    ctx = await getCompanyId()
+  } catch (err: any) {
+    return { error: err.message }
+  }
+  const { supabase, companyId, userId } = ctx
   
   const productId = formData.get('product_id') as string
   const quantity = parseInt(formData.get('quantity') as string)
@@ -70,13 +85,12 @@ export async function processStockOut(formData: FormData) {
     return { error: 'Data tidak valid' }
   }
 
-  // Verify if we have enough stock before allowing stock out
   const { data: product } = await supabase.from('products').select('current_stock').eq('id', productId).single()
   if (!product || product.current_stock < quantity) {
     return { error: 'Stok tidak mencukupi untuk transaksi ini' }
   }
 
-  const { error } = await supabase.from('stock_transactions').insert([{
+  const { data: tx, error } = await supabase.from('stock_transactions').insert([{
     company_id: companyId,
     product_id: productId,
     warehouse_id: warehouseId,
@@ -85,12 +99,14 @@ export async function processStockOut(formData: FormData) {
     type: 'OUT',
     quantity: quantity,
     notes: notes,
-  }])
+  }]).select().single()
 
   if (error) {
     console.error('Stock Out Error:', error)
     return { error: error.message }
   }
+
+  await logActivity('Stock Removed', 'stock_transaction', tx.id, { product_id: productId, quantity })
 
   revalidatePath('/inventory')
   revalidatePath('/products')

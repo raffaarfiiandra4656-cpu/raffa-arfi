@@ -21,8 +21,9 @@ export default async function InventoryPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   const companyId = profile?.company_id
+  const isViewer = profile?.role === 'VIEWER'
 
   let transactions: any[] = []
   if (companyId) {
@@ -52,18 +53,20 @@ export default async function InventoryPage() {
           <h2 className="text-3xl font-bold tracking-tight">Riwayat Inventaris</h2>
           <p className="text-muted-foreground mt-1">Pantau semua pergerakan barang masuk dan keluar.</p>
         </div>
-        <div className="flex gap-2">
-          <Link href="/inventory/in">
-            <Button className="bg-green-600 hover:bg-green-700">
-              <Plus className="mr-2 h-4 w-4" /> Barang Masuk
-            </Button>
-          </Link>
-          <Link href="/inventory/out">
-            <Button variant="destructive">
-              <Minus className="mr-2 h-4 w-4" /> Barang Keluar
-            </Button>
-          </Link>
-        </div>
+        {!isViewer && (
+          <div className="flex gap-2">
+            <Link href="/inventory/in">
+              <Button className="bg-green-600 hover:bg-green-700">
+                <Plus className="mr-2 h-4 w-4" /> Barang Masuk
+              </Button>
+            </Link>
+            <Link href="/inventory/out">
+              <Button variant="destructive">
+                <Minus className="mr-2 h-4 w-4" /> Barang Keluar
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
       
       <Card>

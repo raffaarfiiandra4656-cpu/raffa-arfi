@@ -31,6 +31,7 @@ export async function signup(formData: FormData) {
     options: {
       data: {
         full_name: formData.get('full_name') as string,
+        invite_token: formData.get('invite_token') as string || null,
       }
     }
   }

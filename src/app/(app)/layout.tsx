@@ -82,10 +82,25 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             Laporan
           </Link>
           {profile?.role === 'OWNER' && (
-             <Link href="/admin/users" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
-               <Users className="h-5 w-5 mr-3 text-gray-400" />
-               Pengguna
-             </Link>
+            <div className="pt-4 mt-4 border-t dark:border-zinc-800">
+              <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Admin Panel</p>
+              <Link href="/admin/users" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
+                <Users className="h-5 w-5 mr-3 text-gray-400" />
+                Pengguna & Peran
+              </Link>
+              <Link href="/admin/invitations" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
+                <Users className="h-5 w-5 mr-3 text-gray-400" />
+                Undangan Tim
+              </Link>
+              <Link href="/admin/activity-logs" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
+                <FileText className="h-5 w-5 mr-3 text-gray-400" />
+                Log Aktivitas
+              </Link>
+              <Link href="/admin/company-settings" className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
+                <Settings className="h-5 w-5 mr-3 text-gray-400" />
+                Pengaturan Perusahaan
+              </Link>
+            </div>
           )}
         </nav>
         <div className="p-4 border-t dark:border-zinc-800">

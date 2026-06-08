@@ -11,8 +11,9 @@ export default async function ProductsPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   const companyId = profile?.company_id
+  const isViewer = profile?.role === 'VIEWER'
 
   let products: any[] = []
   if (companyId) {
@@ -32,11 +33,13 @@ export default async function ProductsPage() {
           <h2 className="text-3xl font-bold tracking-tight">Inventaris Produk</h2>
           <p className="text-muted-foreground mt-1">Kelola katalog dan pantau stok barang secara real-time.</p>
         </div>
-        <Link href="/products/new">
-          <Button>
-            <Plus className="mr-2 h-4 w-4" /> Tambah Produk
-          </Button>
-        </Link>
+        {!isViewer && (
+          <Link href="/products/new">
+            <Button>
+              <Plus className="mr-2 h-4 w-4" /> Tambah Produk
+            </Button>
+          </Link>
+        )}
       </div>
       
       <DataTable columns={columns} data={products} />

@@ -13,8 +13,18 @@ export default async function NewProductPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   const companyId = profile?.company_id
+
+  if (profile?.role === 'VIEWER') {
+    return (
+      <div className="p-6">
+        <h2 className="text-xl font-bold text-red-600">Akses Ditolak</h2>
+        <p>Anda tidak memiliki izin untuk menambahkan produk.</p>
+        <Link href="/products" className="text-blue-600 hover:underline mt-4 inline-block">Kembali ke Inventaris Produk</Link>
+      </div>
+    )
+  }
 
   // Fetch categories, units, warehouses for dropdowns
   let categories: any[] = []

@@ -9,7 +9,7 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   const companyId = profile?.company_id
 
   let totalProducts = 0
@@ -20,8 +20,29 @@ export default async function DashboardPage() {
   let chartData: any[] = []
   let recentActivities: any[] = []
   let aiInsights: string[] = []
+
+  // User Stats
+  let totalUsers = 0
+  let activeUsers = 0
+  let pendingUsers = 0
+  let suspendedUsers = 0
+  let roleSummary = { OWNER: 0, ADMIN: 0, STAFF: 0, VIEWER: 0 }
   
   if (companyId) {
+    const { data: profiles } = await supabase.from('profiles').select('status, role').eq('company_id', companyId)
+    if (profiles) {
+      totalUsers = profiles.length
+      profiles.forEach(p => {
+        if (p.status === 'active') activeUsers++
+        if (p.status === 'pending') pendingUsers++
+        if (p.status === 'suspended') suspendedUsers++
+        if (p.role === 'OWNER') roleSummary.OWNER++
+        if (p.role === 'ADMIN') roleSummary.ADMIN++
+        if (p.role === 'STAFF') roleSummary.STAFF++
+        if (p.role === 'VIEWER') roleSummary.VIEWER++
+      })
+    }
+
     const { data: products } = await supabase.from('products').select('*').eq('company_id', companyId)
     if (products) {
       totalProducts = products.length
@@ -118,7 +139,47 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      {profile?.role === 'OWNER' && (
+        <>
+          <h3 className="text-xl font-bold tracking-tight mt-8 mb-4">Statistik Pengguna</h3>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Pengguna</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{totalUsers}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-green-600">Aktif</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">{activeUsers}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-amber-600">Menunggu</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-amber-600">{pendingUsers}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-red-600">Ditangguhkan</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-red-600">{suspendedUsers}</div>
+              </CardContent>
+            </Card>
+          </div>
+        </>
+      )}
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-8">
         <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Perbandingan Stok Produk</CardTitle>

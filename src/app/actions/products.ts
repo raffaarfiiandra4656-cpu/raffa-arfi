@@ -3,14 +3,17 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/utils/supabase/server'
 
+import { logActivity } from './logs'
+
 export async function addProduct(formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   if (!profile?.company_id) throw new Error('No company found')
+  if (profile.role === 'VIEWER') return { error: 'Unauthorized: Viewers cannot add products' }
 
   const data = {
     company_id: profile.company_id,
@@ -24,12 +27,14 @@ export async function addProduct(formData: FormData) {
     status: formData.get('status') as string || 'Out Of Stock',
   }
 
-  const { error } = await supabase.from('products').insert([data])
+  const { data: newProd, error } = await supabase.from('products').insert([data]).select().single()
 
   if (error) {
     console.error('Error adding product:', error)
     return { error: error.message }
   }
+
+  await logActivity('Product Created', 'product', newProd?.id, { name: data.name, sku: data.sku })
 
   revalidatePath('/products')
   return { success: true }
@@ -38,11 +43,25 @@ export async function addProduct(formData: FormData) {
 export async function deleteProduct(id: string) {
   const supabase = await createClient()
   
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
+
+  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
+  if (!profile?.company_id) throw new Error('No company found')
+  if (profile.role === 'VIEWER') return { error: 'Unauthorized: Viewers cannot delete products' }
+
+  // Get product info for log
+  const { data: prod } = await supabase.from('products').select('name, sku').eq('id', id).single()
+
   const { error } = await supabase.from('products').delete().eq('id', id)
   
   if (error) {
     console.error('Error deleting product:', error)
     return { error: error.message }
+  }
+
+  if (prod) {
+    await logActivity('Product Deleted', 'product', id, { name: prod.name, sku: prod.sku })
   }
 
   revalidatePath('/products')

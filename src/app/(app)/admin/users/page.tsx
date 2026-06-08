@@ -70,7 +70,7 @@ export default async function AdminUsersPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       {u.id !== user.id && (
-                        <AdminActionButtons userId={u.id} currentStatus={u.status} />
+                        <AdminActionButtons userId={u.id} currentStatus={u.status} currentRole={u.role} />
                       )}
                     </TableCell>
                   </TableRow>

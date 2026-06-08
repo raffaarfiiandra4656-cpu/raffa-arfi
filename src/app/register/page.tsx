@@ -5,8 +5,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default async function RegisterPage(props: { searchParams: Promise<{ message: string }> }) {
+export default async function RegisterPage(props: { searchParams: Promise<{ message: string, invite_token?: string }> }) {
   const searchParams = await props.searchParams;
+  const { message, invite_token } = searchParams;
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-zinc-950 p-4">
       <Card className="w-full max-w-sm">
@@ -16,6 +18,7 @@ export default async function RegisterPage(props: { searchParams: Promise<{ mess
         </CardHeader>
         <CardContent>
           <form className="grid gap-4" action={signup}>
+            {invite_token && <input type="hidden" name="invite_token" value={invite_token} />}
             <div className="grid gap-2">
               <Label htmlFor="full_name">Nama Lengkap</Label>
               <Input
