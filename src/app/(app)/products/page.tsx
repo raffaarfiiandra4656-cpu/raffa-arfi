@@ -14,7 +14,7 @@ export default async function ProductsPage() {
   const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
   const companyId = profile?.company_id
 
-  let products = []
+  let products: any[] = []
   if (companyId) {
     const { data } = await supabase
       .from('products')

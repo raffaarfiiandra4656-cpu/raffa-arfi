@@ -17,9 +17,9 @@ export default async function NewProductPage() {
   const companyId = profile?.company_id
 
   // Fetch categories, units, warehouses for dropdowns
-  let categories = []
-  let units = []
-  let warehouses = []
+  let categories: any[] = []
+  let units: any[] = []
+  let warehouses: any[] = []
 
   if (companyId) {
     const [cats, uns, whs] = await Promise.all([

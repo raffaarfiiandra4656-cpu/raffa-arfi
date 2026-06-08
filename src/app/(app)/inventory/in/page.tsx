@@ -17,9 +17,9 @@ export default async function StockInPage() {
   const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
   const companyId = profile?.company_id
 
-  let products = []
-  let warehouses = []
-  let suppliers = []
+  let products: any[] = []
+  let warehouses: any[] = []
+  let suppliers: any[] = []
 
   if (companyId) {
     const [prods, whs, sups] = await Promise.all([

@@ -14,9 +14,9 @@ export default async function MasterDataPage() {
   const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
   const companyId = profile?.company_id
 
-  let categories = []
-  let units = []
-  let warehouses = []
+  let categories: any[] = []
+  let units: any[] = []
+  let warehouses: any[] = []
 
   if (companyId) {
     const [cats, uns, whs] = await Promise.all([

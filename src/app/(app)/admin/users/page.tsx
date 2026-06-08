@@ -19,7 +19,7 @@ export default async function AdminUsersPage() {
 
   const companyId = profile?.company_id
 
-  let users = []
+  let users: any[] = []
   if (companyId) {
     const { data } = await supabase
       .from('profiles')

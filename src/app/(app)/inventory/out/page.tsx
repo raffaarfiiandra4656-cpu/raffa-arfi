@@ -17,8 +17,8 @@ export default async function StockOutPage() {
   const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
   const companyId = profile?.company_id
 
-  let products = []
-  let warehouses = []
+  let products: any[] = []
+  let warehouses: any[] = []
 
   if (companyId) {
     const [prods, whs] = await Promise.all([

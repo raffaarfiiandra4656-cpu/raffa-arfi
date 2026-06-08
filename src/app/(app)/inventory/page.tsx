@@ -24,7 +24,7 @@ export default async function InventoryPage() {
   const { data: profile } = await supabase.from('profiles').select('company_id').eq('id', user.id).single()
   const companyId = profile?.company_id
 
-  let transactions = []
+  let transactions: any[] = []
   if (companyId) {
     const { data } = await supabase
       .from('stock_transactions')
