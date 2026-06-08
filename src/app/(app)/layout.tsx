@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Package, LayoutDashboard, ArchiveRestore, Settings, Users, LogOut, FileText, Bell, MoreHorizontal } from 'lucide-react'
+import { Package, LayoutDashboard, ArchiveRestore, Settings, Users, LogOut, FileText, Bell, MoreHorizontal, ArrowDownRight, ArrowUpRight, Truck, Building2, BarChart3 } from 'lucide-react'
 import { logout } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 
@@ -53,9 +53,14 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   }
 
   const navItems = [
-    { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Products', href: '/products', icon: Package },
+    { name: 'Stock In', href: '/inventory/in', icon: ArrowDownRight },
+    { name: 'Stock Out', href: '/inventory/out', icon: ArrowUpRight },
     { name: 'Inventory', href: '/inventory', icon: ArchiveRestore },
+    { name: 'Suppliers', href: '/suppliers', icon: Truck },
+    { name: 'Warehouses', href: '/master/warehouses', icon: Building2 },
+    { name: 'Analytics', href: '#', icon: BarChart3 },
     { name: 'Reports', href: '/reports', icon: FileText },
   ]
 

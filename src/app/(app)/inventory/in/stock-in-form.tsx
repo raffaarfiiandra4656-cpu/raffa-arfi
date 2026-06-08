@@ -30,7 +30,7 @@ export function StockInForm({ products, warehouses, suppliers }: { products: any
 
       <div className="space-y-2">
         <Label htmlFor="product_id" className="text-slate-600 font-bold ml-1">Pilih Produk</Label>
-        <Select name="product_id" required value={selectedProduct} onValueChange={setSelectedProduct}>
+        <Select name="product_id" required value={selectedProduct} onValueChange={(val) => setSelectedProduct(val || '')}>
           <SelectTrigger className="rounded-2xl border-slate-200 bg-slate-50 py-6">
             <SelectValue placeholder="Pilih Produk" />
           </SelectTrigger>
