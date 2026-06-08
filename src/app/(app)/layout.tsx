@@ -80,7 +80,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           
           <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
             {navItems.map((item) => (
-              <Link key={item.name} href={item.href} className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-zinc-800 transition-colors">
+              <Link prefetch={true} key={item.name} href={item.href} className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-zinc-800 transition-colors">
                 <item.icon className="h-5 w-5 mr-4" />
                 {item.name}
               </Link>
@@ -90,18 +90,18 @@ export default async function DashboardLayout({ children }: { children: ReactNod
               <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Master & Admin</p>
             </div>
             
-            <Link href="/master" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
+            <Link prefetch={true} href="/master" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
               <Settings className="h-5 w-5 mr-4" />
               Master Data
             </Link>
 
             {profile?.role === 'OWNER' && (
               <>
-                <Link href="/admin/users" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
+                <Link prefetch={true} href="/admin/users" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
                   <Users className="h-5 w-5 mr-4" />
                   Tim & Peran
                 </Link>
-                <Link href="/admin/company-settings" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
+                <Link prefetch={true} href="/admin/company-settings" className="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">
                   <Settings className="h-5 w-5 mr-4" />
                   Pengaturan
                 </Link>
@@ -170,12 +170,12 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 pb-safe z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="flex justify-around items-center h-16 px-2">
           {navItems.map((item) => (
-            <Link key={item.name} href={item.href} className="flex flex-col items-center justify-center w-full h-full space-y-1">
+            <Link prefetch={true} key={item.name} href={item.href} className="flex flex-col items-center justify-center w-full h-full space-y-1">
               <item.icon className="h-6 w-6 text-slate-400 hover:text-indigo-600" />
               <span className="text-[10px] font-semibold text-slate-500">{item.name}</span>
             </Link>
           ))}
-          <Link href="/master" className="flex flex-col items-center justify-center w-full h-full space-y-1">
+          <Link prefetch={true} href="/master" className="flex flex-col items-center justify-center w-full h-full space-y-1">
             <MoreHorizontal className="h-6 w-6 text-slate-400 hover:text-indigo-600" />
             <span className="text-[10px] font-semibold text-slate-500">More</span>
           </Link>
