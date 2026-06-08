@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { ExportButtons } from './export-buttons'
 
 export default async function InventoryPage() {
   const supabase = await createClient()
@@ -54,17 +55,20 @@ export default async function InventoryPage() {
           <p className="text-muted-foreground mt-1">Pantau semua pergerakan barang masuk dan keluar.</p>
         </div>
         {!isViewer && (
-          <div className="flex gap-2">
-            <Link href="/inventory/in">
-              <Button className="bg-green-600 hover:bg-green-700">
-                <Plus className="mr-2 h-4 w-4" /> Barang Masuk
-              </Button>
-            </Link>
-            <Link href="/inventory/out">
-              <Button variant="destructive">
-                <Minus className="mr-2 h-4 w-4" /> Barang Keluar
-              </Button>
-            </Link>
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <ExportButtons transactions={transactions} />
+            <div className="flex gap-2">
+              <Link href="/inventory/in" className="flex-1">
+                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 shadow-sm shadow-emerald-200">
+                  <Plus className="mr-2 h-4 w-4" /> Barang Masuk
+                </Button>
+              </Link>
+              <Link href="/inventory/out" className="flex-1">
+                <Button className="w-full bg-rose-600 hover:bg-rose-700 shadow-sm shadow-rose-200">
+                  <Minus className="mr-2 h-4 w-4" /> Barang Keluar
+                </Button>
+              </Link>
+            </div>
           </div>
         )}
       </div>

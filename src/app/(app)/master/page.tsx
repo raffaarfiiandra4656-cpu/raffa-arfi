@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import { logout } from '@/app/actions/auth'
 import Link from 'next/link'
-import { ChevronRight, PackageOpen, Layers, MapPin, Users, Settings, Shield, LogOut, Bell, HelpCircle } from 'lucide-react'
+import { ChevronRight, PackageOpen, Layers, MapPin, Users, Settings, Shield, LogOut, Bell, HelpCircle, UserPlus } from 'lucide-react'
 
 export default async function MasterDataPage() {
   const supabase = await createClient()
@@ -20,9 +20,10 @@ export default async function MasterDataPage() {
   ]
 
   const adminMenu = [
+    { title: 'Persetujuan Pendaftar', icon: UserPlus, href: '/admin/approvals', desc: 'Tinjau akun baru', color: 'text-amber-600', bg: 'bg-amber-100' },
     { title: 'Pengguna & Tim', icon: Users, href: '/admin/users', desc: 'Kelola akses dan peran', color: 'text-blue-600', bg: 'bg-blue-100' },
     { title: 'Pengaturan Perusahaan', icon: Settings, href: '/admin/company-settings', desc: 'Profil dan preferensi bisnis', color: 'text-slate-600', bg: 'bg-slate-100' },
-    { title: 'Keamanan', icon: Shield, href: '#', desc: 'Ubah kata sandi dan 2FA', color: 'text-amber-600', bg: 'bg-amber-100' },
+    { title: 'Keamanan', icon: Shield, href: '#', desc: 'Ubah kata sandi dan 2FA', color: 'text-red-600', bg: 'bg-red-100' },
   ]
 
   return (

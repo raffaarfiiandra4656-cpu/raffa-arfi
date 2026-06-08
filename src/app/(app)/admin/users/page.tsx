@@ -26,6 +26,7 @@ export default async function AdminUsersPage() {
       .from('profiles')
       .select('id, full_name, role, status, created_at')
       .eq('company_id', companyId)
+      .neq('status', 'pending')
       .order('created_at', { ascending: false })
       
     if (data) users = data
