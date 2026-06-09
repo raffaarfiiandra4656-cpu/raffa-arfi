@@ -23,7 +23,7 @@ export default async function AdminApprovalsPage() {
   if (companyId) {
     const { data } = await supabase
       .from('profiles')
-      .select('id, full_name, email, role, status, created_at')
+      .select('id, full_name, role, status, created_at')
       .eq('company_id', companyId)
       .eq('status', 'pending')
       .order('created_at', { ascending: true })
@@ -62,7 +62,6 @@ export default async function AdminApprovalsPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-800 dark:text-white">{u.full_name}</h3>
-                    <p className="text-xs font-semibold text-slate-500">{u.email}</p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="text-xs font-bold text-slate-500 bg-slate-100 dark:bg-zinc-800 px-2 py-0.5 rounded-md flex items-center gap-1">
                         <Clock className="w-3 h-3" />

@@ -13,10 +13,16 @@ async function getCompanyId() {
 
   let { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
   
-  if (!profile?.company_id && profile?.role === 'OWNER') {
+  if (!profile) {
+      // Force create profile if missing
+      await supabase.from('profiles').insert([{ id: user.id, full_name: user.email?.split('@')[0] || 'User', role: 'OWNER', status: 'active' }])
+      profile = { role: 'OWNER', company_id: null }
+  }
+  
+  if (!profile?.company_id && (profile?.role === 'OWNER' || profile?.role === 'ADMIN' || !profile?.role)) {
       const { data: newCompany, error: companyError } = await supabase
         .from('companies')
-        .insert([{ name: 'Perusahaan Saya' }])
+        .insert([{ name: 'Perusahaan ' + (user.email?.split('@')[0] || 'Baru') }])
         .select()
         .single();
         

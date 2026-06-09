@@ -12,12 +12,19 @@ export async function updateCompanySettings(formData: FormData) {
 
   // Must be OWNER
   let { data: profile } = await supabase.from('profiles').select('role, company_id').eq('id', user.id).single()
+  
+  if (!profile) {
+      // Force create profile if missing
+      await supabase.from('profiles').insert([{ id: user.id, full_name: user.email?.split('@')[0] || 'User', role: 'OWNER', status: 'active' }])
+      profile = { role: 'OWNER', company_id: null }
+  }
+
   if (profile?.role !== 'OWNER') return { error: 'Unauthorized' }
 
   if (!profile?.company_id) {
       const { data: newCompany, error: companyError } = await supabase
         .from('companies')
-        .insert([{ name: 'Perusahaan Saya' }])
+        .insert([{ name: 'Perusahaan ' + (user.email?.split('@')[0] || 'Baru') }])
         .select()
         .single();
         
