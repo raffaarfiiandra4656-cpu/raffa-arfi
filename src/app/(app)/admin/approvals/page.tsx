@@ -43,6 +43,16 @@ export default async function AdminApprovalsPage() {
         </div>
       </div>
       
+      <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+         <div>
+           <h3 className="font-bold text-indigo-900">Cara Menambahkan Anggota</h3>
+           <p className="text-xs text-indigo-700 mt-1">Jika pendaftar belum muncul, minta mereka memasukkan <strong>Company ID</strong> ini di akun mereka:</p>
+         </div>
+         <div className="bg-white px-4 py-2 rounded-xl border border-indigo-100 shadow-sm font-mono text-sm font-bold text-slate-700 select-all">
+           {companyId}
+         </div>
+      </div>
+      
       <Card className="rounded-3xl border-0 shadow-lg shadow-amber-200/50 dark:shadow-none dark:bg-zinc-950 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-amber-100 dark:from-amber-900/20 to-transparent rounded-bl-full"></div>
         <CardHeader className="relative z-10 pb-2">

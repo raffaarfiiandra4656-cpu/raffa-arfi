@@ -37,11 +37,31 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   if (profile?.status === 'pending') {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 dark:bg-zinc-950 p-4">
-        <div className="text-center bg-white p-8 rounded-3xl shadow-xl">
+        <div className="text-center bg-white p-8 rounded-3xl shadow-xl w-full max-w-md">
           <h1 className="text-2xl font-bold mb-2 text-indigo-900">Menunggu Persetujuan</h1>
-          <p className="text-slate-500 mb-6">Akun Anda sedang menunggu persetujuan dari Owner.</p>
+          {profile.company_id ? (
+             <p className="text-slate-500 mb-6">Akun Anda sedang menunggu persetujuan dari Owner perusahaan Anda.</p>
+          ) : (
+             <div className="mb-6 mt-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl text-left">
+                <p className="text-slate-600 mb-4 text-sm font-medium">Anda belum tergabung ke perusahaan manapun. Masukkan <strong>Company ID</strong> dari Owner untuk bergabung.</p>
+                <form action={async (formData) => {
+                    'use server'
+                    const cid = formData.get('companyId') as string
+                    if (cid && cid.length > 10) {
+                       const { createClient } = await import('@/utils/supabase/server')
+                       const supabase = await createClient()
+                       await supabase.from('profiles').update({ company_id: cid }).eq('id', user.id)
+                       const { revalidatePath } = await import('next/cache')
+                       revalidatePath('/', 'layout')
+                    }
+                }} className="flex gap-2">
+                   <input type="text" name="companyId" placeholder="Company ID..." className="flex-1 px-3 py-2 border border-slate-200 rounded-xl text-sm outline-none focus:border-indigo-500" required />
+                   <Button type="submit" className="rounded-xl bg-indigo-600 hover:bg-indigo-700">Gabung</Button>
+                </form>
+             </div>
+          )}
           <form action={logout as any}>
-            <Button variant="outline" className="rounded-full w-full">Keluar</Button>
+            <Button variant="outline" className="rounded-full w-full">Keluar Akun</Button>
           </form>
         </div>
       </div>
