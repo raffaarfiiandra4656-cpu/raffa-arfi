@@ -34,6 +34,16 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     }
   }
 
+  // Auto-create company for any OWNER if they don't have one yet
+  if (profile?.role === 'OWNER' && !profile?.company_id) {
+    const newCompanyId = crypto.randomUUID()
+    const { error: insertError } = await supabase.from('companies').insert({ id: newCompanyId, name: 'Perusahaan Saya' })
+    if (!insertError) {
+      await supabase.from('profiles').update({ company_id: newCompanyId }).eq('id', user.id)
+      profile.company_id = newCompanyId
+    }
+  }
+
   if (profile?.status === 'pending') {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 dark:bg-zinc-950 p-4">
