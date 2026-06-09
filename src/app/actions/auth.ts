@@ -5,21 +5,26 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
 export async function login(formData: FormData) {
-  const supabase = await createClient()
+  try {
+    const supabase = await createClient()
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
+    const data = {
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+    }
+
+    const { error } = await supabase.auth.signInWithPassword(data)
+
+    if (error) {
+      return redirect('/login?message=' + encodeURIComponent('Gagal masuk: ' + error.message))
+    }
+
+    revalidatePath('/', 'layout')
+    return redirect('/dashboard')
+  } catch (err: any) {
+    if (err?.message === 'NEXT_REDIRECT') throw err;
+    return redirect('/login?message=' + encodeURIComponent('Terjadi kesalahan sistem: ' + err.message))
   }
-
-  const { error } = await supabase.auth.signInWithPassword(data)
-
-  if (error) {
-    redirect('/login?message=Could not authenticate user')
-  }
-
-  revalidatePath('/', 'layout')
-  redirect('/dashboard')
 }
 
 export async function signup(formData: FormData) {

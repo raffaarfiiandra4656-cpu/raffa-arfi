@@ -11,9 +11,24 @@ async function checkAdmin() {
   if (!user) throw new Error('Not authenticated')
 
   const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
-  if (!profile || profile.role !== 'OWNER') throw new Error('Unauthorized')
   
-  return { supabase, companyId: profile.company_id }
+  let currentProfile = profile;
+  
+  if (!currentProfile?.company_id && currentProfile?.role === 'OWNER') {
+      const newCompanyId = crypto.randomUUID();
+      const { error: companyError } = await supabase
+        .from('companies')
+        .insert([{ id: newCompanyId, name: 'Perusahaan ' + (user.email?.split('@')[0] || 'Baru') }]);
+        
+      if (!companyError) {
+          await supabase.from('profiles').update({ company_id: newCompanyId }).eq('id', user.id);
+          currentProfile.company_id = newCompanyId;
+      }
+  }
+
+  if (!currentProfile || currentProfile.role !== 'OWNER') throw new Error('Unauthorized')
+  
+  return { supabase, companyId: currentProfile.company_id }
 }
 
 export async function approveUser(userId: string) {

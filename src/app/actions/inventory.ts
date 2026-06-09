@@ -20,15 +20,14 @@ async function getCompanyId() {
   }
   
   if (!profile?.company_id && (profile?.role === 'OWNER' || profile?.role === 'ADMIN' || !profile?.role)) {
-      const { data: newCompany, error: companyError } = await supabase
+      const newCompanyId = crypto.randomUUID();
+      const { error: companyError } = await supabase
         .from('companies')
-        .insert([{ name: 'Perusahaan ' + (user.email?.split('@')[0] || 'Baru') }])
-        .select()
-        .single();
+        .insert([{ id: newCompanyId, name: 'Perusahaan ' + (user.email?.split('@')[0] || 'Baru') }]);
         
-      if (!companyError && newCompany) {
-          await supabase.from('profiles').update({ company_id: newCompany.id }).eq('id', user.id);
-          profile.company_id = newCompany.id;
+      if (!companyError) {
+          await supabase.from('profiles').update({ company_id: newCompanyId }).eq('id', user.id);
+          profile.company_id = newCompanyId;
       }
   }
 
