@@ -24,7 +24,7 @@ export default async function AdminApprovalsPage() {
     const { data } = await supabase
       .from('profiles')
       .select('id, full_name, role, status, created_at')
-      .eq('company_id', companyId)
+      .or(`company_id.eq.${companyId},company_id.is.null`)
       .eq('status', 'pending')
       .order('created_at', { ascending: true })
       
