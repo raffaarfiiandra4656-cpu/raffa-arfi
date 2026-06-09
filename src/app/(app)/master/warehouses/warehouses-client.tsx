@@ -33,8 +33,6 @@ export function WarehousesClient({ warehouses, totalSKU, totalValue, isViewer }:
   
   const avgOccupancy = 74.2
 
-  const avgOccupancy = 74.2
-
   const handleAction = async (action: string, name: string, id?: string) => {
     if (action === 'delete' && id) {
       if (confirm(`Anda yakin ingin menghapus gudang ${name}?`)) {
