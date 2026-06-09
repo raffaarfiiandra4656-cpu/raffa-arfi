@@ -11,8 +11,23 @@ export async function updateCompanySettings(formData: FormData) {
   if (!user) return { error: 'Not authenticated' }
 
   // Must be OWNER
-  const { data: profile } = await supabase.from('profiles').select('role, company_id').eq('id', user.id).single()
+  let { data: profile } = await supabase.from('profiles').select('role, company_id').eq('id', user.id).single()
   if (profile?.role !== 'OWNER') return { error: 'Unauthorized' }
+
+  if (!profile?.company_id) {
+      const { data: newCompany, error: companyError } = await supabase
+        .from('companies')
+        .insert([{ name: 'Perusahaan Saya' }])
+        .select()
+        .single();
+        
+      if (!companyError && newCompany) {
+          await supabase.from('profiles').update({ company_id: newCompany.id }).eq('id', user.id);
+          profile.company_id = newCompany.id;
+      } else {
+          return { error: 'No company found and failed to create one' }
+      }
+  }
 
   const name = formData.get('name') as string
   const company_slug = formData.get('company_slug') as string

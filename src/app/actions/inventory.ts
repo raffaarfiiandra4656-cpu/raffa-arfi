@@ -11,7 +11,21 @@ async function getCompanyId() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  const { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
+  let { data: profile } = await supabase.from('profiles').select('company_id, role').eq('id', user.id).single()
+  
+  if (!profile?.company_id && profile?.role === 'OWNER') {
+      const { data: newCompany, error: companyError } = await supabase
+        .from('companies')
+        .insert([{ name: 'Perusahaan Saya' }])
+        .select()
+        .single();
+        
+      if (!companyError && newCompany) {
+          await supabase.from('profiles').update({ company_id: newCompany.id }).eq('id', user.id);
+          profile.company_id = newCompany.id;
+      }
+  }
+
   if (!profile?.company_id) throw new Error('No company found')
   if (profile.role === 'VIEWER') throw new Error('Unauthorized: Viewers cannot process stock')
   
