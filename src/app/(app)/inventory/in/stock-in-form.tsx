@@ -37,7 +37,6 @@ export function StockInForm({ products, warehouses, suppliers }: { products: any
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-2">
                   <Label htmlFor="product_id" className="text-xs font-bold uppercase tracking-wider text-slate-500">Cari Produk</Label>
-                  {/* Note: Replacing standard Input with Select just to keep original functionality, but styled to look like search if needed */}
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 z-10" />
                     <Select name="product_id" required value={selectedProduct} onValueChange={(val) => setSelectedProduct(val || '')}>
@@ -45,9 +44,11 @@ export function StockInForm({ products, warehouses, suppliers }: { products: any
                         <SelectValue placeholder="Pilih Produk..." />
                       </SelectTrigger>
                       <SelectContent>
-                        {products.map(p => (
+                        {products.length > 0 ? products.map(p => (
                           <SelectItem key={p.id} value={p.id}>{p.sku} - {p.name}</SelectItem>
-                        ))}
+                        )) : (
+                          <SelectItem value="none" disabled>Belum ada produk</SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
@@ -55,14 +56,16 @@ export function StockInForm({ products, warehouses, suppliers }: { products: any
 
                 <div className="space-y-2">
                   <Label htmlFor="supplier_id" className="text-xs font-bold uppercase tracking-wider text-slate-500">Pemasok (Supplier)</Label>
-                  <Select name="supplier_id">
+                  <Select name="supplier_id" required>
                     <SelectTrigger className="w-full h-11 rounded-lg border-slate-200 bg-white">
                       <SelectValue placeholder="Pilih Pemasok..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {suppliers.map(s => (
+                      {suppliers.length > 0 ? suppliers.map(s => (
                         <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
-                      ))}
+                      )) : (
+                        <SelectItem value="none" disabled>Belum ada pemasok</SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
