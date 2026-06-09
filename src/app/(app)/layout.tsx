@@ -71,7 +71,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
              </div>
           )}
           <form action={logout as any}>
-            <Button variant="outline" className="rounded-full w-full">Keluar Akun</Button>
+            <Button type="submit" variant="outline" className="rounded-full w-full">Keluar Akun</Button>
           </form>
         </div>
       </div>
@@ -85,7 +85,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           <h1 className="text-2xl font-bold mb-2 text-red-600">Akun Ditangguhkan</h1>
           <p className="text-slate-500 mb-6">Hubungi Administrator Anda.</p>
           <form action={logout as any}>
-            <Button variant="outline" className="rounded-full w-full">Keluar</Button>
+            <Button type="submit" variant="outline" className="rounded-full w-full">Keluar</Button>
           </form>
         </div>
       </div>
