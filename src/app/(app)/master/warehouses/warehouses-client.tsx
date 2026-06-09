@@ -80,11 +80,9 @@ export function WarehousesClient({ warehouses, totalSKU, totalValue, isViewer }:
           </div>
           {!isViewer && (
             <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white h-10 rounded-lg font-semibold shadow-sm flex-none">
+              <DialogTrigger render={<Button className="bg-indigo-600 hover:bg-indigo-700 text-white h-10 rounded-lg font-semibold shadow-sm flex-none" />}>
                   <Plus className="w-4 h-4 mr-2" />
                   Tambah Gudang Baru
-                </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] rounded-2xl">
                 <form action={handleSubmit} ref={formRef}>
@@ -180,10 +178,8 @@ export function WarehousesClient({ warehouses, totalSKU, totalValue, isViewer }:
                   {!isViewer && (
                     <div className="absolute top-4 right-4 z-10">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="w-8 h-8 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 transition-colors">
+                        <DropdownMenuTrigger render={<button className="w-8 h-8 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 transition-colors" />}>
                             <Edit2 className="w-4 h-4" />
-                          </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="rounded-xl">
                           <DropdownMenuItem onClick={() => handleAction('Edit', name)}>Edit Detail</DropdownMenuItem>

@@ -87,11 +87,9 @@ export function SuppliersClient({ suppliersData, isViewer }: { suppliersData: an
         </div>
         {!isViewer && (
           <Dialog open={isAddingSupplier} onOpenChange={setIsAddingSupplier}>
-            <DialogTrigger asChild>
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white h-10 rounded-lg font-semibold shadow-sm w-full md:w-auto">
+            <DialogTrigger render={<Button className="bg-indigo-600 hover:bg-indigo-700 text-white h-10 rounded-lg font-semibold shadow-sm w-full md:w-auto" />}>
                 <Plus className="w-4 h-4 mr-2" />
                 Tambah Pemasok Baru
-              </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] rounded-2xl">
               <DialogHeader>
@@ -198,11 +196,9 @@ export function SuppliersClient({ suppliersData, isViewer }: { suppliersData: an
           <div className="flex items-center gap-3">
             
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="h-9 bg-white border-slate-200 text-slate-700 font-semibold rounded-lg">
+              <DropdownMenuTrigger render={<Button variant="outline" className="h-9 bg-white border-slate-200 text-slate-700 font-semibold rounded-lg" />}>
                   <Filter className="w-4 h-4 mr-2" />
                   Filter
-                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="rounded-xl">
                 <DropdownMenuLabel>Filter Pemasok</DropdownMenuLabel>
@@ -215,11 +211,9 @@ export function SuppliersClient({ suppliersData, isViewer }: { suppliersData: an
             </DropdownMenu>
 
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="h-9 bg-white border-slate-200 text-slate-700 font-semibold rounded-lg">
+              <DropdownMenuTrigger render={<Button variant="outline" className="h-9 bg-white border-slate-200 text-slate-700 font-semibold rounded-lg" />}>
                   <ListOrdered className="w-4 h-4 mr-2" />
                   Urutkan
-                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="rounded-xl">
                 <DropdownMenuLabel>Urutkan Berdasarkan</DropdownMenuLabel>
@@ -279,10 +273,8 @@ export function SuppliersClient({ suppliersData, isViewer }: { suppliersData: an
                         </button>
                         
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 transition-colors ml-1">
+                          <DropdownMenuTrigger render={<button className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 transition-colors ml-1" />}>
                               <MoreVertical className="w-5 h-5" />
-                            </button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="rounded-xl w-48">
                             <DropdownMenuItem onClick={() => handleAction('edit', s.company)}>Edit Detail Pemasok</DropdownMenuItem>
